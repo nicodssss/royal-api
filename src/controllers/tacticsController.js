@@ -22,6 +22,24 @@ export const getPlayerData = async (req, res) => {
   res.json(data);
 };
 
+export const getClanData = async (req, res) => {
+  const tag = req.params.tag;
+  console.log('Received clan tag:', tag); 
+  const response = await fetch(`https://api.clashroyale.com/v1/clans/%23${tag}`, {
+    headers: {
+      Authorization: `Bearer ${process.env.CLASH_ROYALE_API_KEY}`,
+      Accept: "application/json"
+    },
+  });
+  console.log('Fetch Clan Data Response Status:', response);
+  if (!response.ok) {
+    const error = await response.text();
+    return res.status(response.status
+).send(error);
+  }
+  const data = await response.json();
+  res.json(data);
+};
 
 
 export const getTactics = async (req, res) => {
